@@ -1,6 +1,6 @@
 import sys
 import os
-import temp
+import tempMain
 import inspect
 from importlib import import_module
 
@@ -41,7 +41,7 @@ def test02():
     # for it in ret:
     #     print(it.__name__, type(it))
 
-    retMember = inspect.getmembers(temp)
+    retMember = inspect.getmembers(tempMain)
     print(type(retMember))
     for it in retMember:
         print(type(it), it)
