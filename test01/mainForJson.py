@@ -22,7 +22,7 @@ def jsonDemo():
 
 
 def testTyp():
-    strIn = '{"uart_port":"COM1", "uart_baudrate": 115200}'
+    strIn = '{"串口":"COM1", "波特率": 115200, "名字":"通信接口"}'
     data = json.loads(strIn)
     print(data)
 
