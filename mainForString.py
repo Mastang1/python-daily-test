@@ -1,8 +1,13 @@
 import os
 
 def strStrip():
-    strInput = input()
+    strInput = 'fdfdf\n'
+    dataInput = strInput.encode()
+    print(dataInput, dataInput[5])
     print(' -- raw data: ', strInput)
-    print(' -- new data: ', strInput.strip())
+
+    if strInput.endswith('\n'):
+        print(f'Target string: {strInput}')
+
 if __name__ == '__main__':
     strStrip()
