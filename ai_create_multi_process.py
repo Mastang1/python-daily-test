@@ -14,10 +14,6 @@ def getTestCases(cls):
     inst = cls() 
     # for it in cls.__dict__: 
     for it in dir(inst): 
-        if it == "SharedClass":
-            print(it, type(it), getattr(inst, str(it), None), type(getattr(inst, str(it), None)) )
-            sc = getattr(inst, str(it), None)
-
         if str(it).startswith('_') or str(it).endswith('_'): 
             continue 
         if str(it).startswith("testcase"):  
@@ -61,10 +57,15 @@ if __name__ == "__main__":
     shared_class_manager = SharedClassManager()
     shared_class_manager.start()
 
-    retList, inst = getTestCases(shared_class_manager.SharedClass)
+    print(shared_class_manager.SharedClass, type(shared_class_manager.SharedClass), shared_class_manager.SharedClass.__name__)
+    print("\n"*10)
+    #fix
+    classProxy = getattr(shared_class_manager, 'SharedClass')
+    retList, inst = getTestCases(classProxy)
+
     for it in retList:
-        print(it)
-        
+        print(" -- Case in proxy class: {}".format(it))
+
 
     
     # Create and start processes

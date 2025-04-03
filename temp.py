@@ -1,11 +1,6 @@
-from datetime import datetime
-import time
+my_dict = {'name': '张三', 'age': 30, 'city': '北京'}
 
-start = datetime.now()
-time.sleep(2)
-
-now = datetime.now()
-
-diff = now - start
-
-print(diff, type(diff), diff.total_seconds(), int(diff.total_seconds()))
+# 保持插入顺序（Python 3.7+保证字典有序）
+result = ' '.join(f"{k} {v}" for k, v in my_dict.items())
+# 输出: 'name=张三, age=30, city=北京'
+print(result)
