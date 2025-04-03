@@ -59,7 +59,7 @@ def main():
             response = chat_with_deepseek(user_input, keyString)
             
             # Optimize output format
-            print("response".center(80, '-'))
+            print("\n\n", "response".center(80, '-'))
             print(response.strip())
             print("-" * 80)
             
