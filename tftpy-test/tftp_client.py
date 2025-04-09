@@ -19,7 +19,7 @@ def start_fttp_client():
         tftpy.TftpException: If an error occurs during the TFTP transfer.
     """
     # Create a TFTP client instance
-    client = tftpy.TftpClient(host='127.0.0.1', localip='127.0.0.1')
+    client = tftpy.TftpClient(host='192.168.4.200', localip='192.168.4.201')
 
     # Open a local file in binary write mode to store the downloaded data
     with open('rcv.bin', 'wb') as stream_rcv:

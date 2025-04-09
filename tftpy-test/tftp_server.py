@@ -17,7 +17,7 @@ def start_tftp_server():
     # Create a TFTP server instance with the current directory as the root directory
     server = TftpServer(tftproot='./')
     # Start the server and listen on the loopback address (127.0.0.1)
-    server.listen(listenip='127.0.0.1')
+    server.listen(listenip='192.168.4.201')
 
 def main():
     """
@@ -35,7 +35,7 @@ def main():
     tftp_process.start()
     # The main process can continue to do other things
     print("TFTP server started in a separate process.")
-    time.sleep(10)
+    time.sleep(40)
     print("TFTP server quit.")
     sys.exit(0)
     
