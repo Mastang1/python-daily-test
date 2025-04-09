@@ -1,4 +1,5 @@
 import inspect
+import numpy as np
 """
 {
     'variant_yyyyy': {
@@ -31,6 +32,7 @@ def get_class_members(cls):
             continue
             
         doc = inspect.getdoc(member)
+        print("doc:",doc,"\n\n")
         member_info = {
             'name': name,
             'type': None,
@@ -60,13 +62,23 @@ def get_class_members(cls):
 class MyClass:
     """类注释"""
     
-    """variant变量注释"""
+    
     def variant_yyyyy(self, param1: str, param2:int):
+        '''fdfdf'''
+
         pass
     
-    """variant变量注释"""
+    
     def variant_dddd(self, param1:dict, param2:list, param3:super,  param4:float):
+        """variant变量注释"""
         pass
 
 # 获取类成员信息
-print(get_class_members(MyClass))
+members = get_class_members(MyClass)
+for name, info in members.items():
+    print(f"\n成员名称: {name}")
+    print(f"类型: {info['type']}")
+    print(f"文档: {info['doc']}")
+    print("参数:")
+    for param_name, param_info in info['params'].items():
+        print(f"  {param_name}: 类型={param_info['type']}, 默认值={param_info['default']}")
