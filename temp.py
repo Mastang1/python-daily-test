@@ -1,46 +1,73 @@
 
-gl_string = "hello world"
+gl_variable = "Today is a good day."
 
-def log_args(func):
-    def wrapper(*args, **kwargs):
-        print(f"调用函数 {func.__name__}，参数:")
-        if args:
-            print("位置参数:", args)
-        if kwargs:
-            print("关键字参数:", kwargs)
-        args[0].display_input()
-        return func(*args, **kwargs)
-    return wrapper
+class Presenter:
+    def __init__(self, show_choices):  # 接收装饰器参数
+        self.show_choices = show_choices
+        
+    def __call__(self, func):   # 接收被装饰函数
+        def wrapper(*args, **kwargs):
+            if self.show_choices == "#param":
+                result = func(*args, **kwargs)
+                self.__show_param(func)
+                return result
+            elif self.show_choices == "#result":
+                result = func(*args, **kwargs)
+                self.__show_result(result)
+                return result
+            else:
+                print("no choice")
+                return func(*args, **kwargs)
+        return wrapper
+
+    def __show_param(self, func: callable):
+        print(func.__code__.co_varnames)
+        print(gl_variable)
+
+    def __show_result(self, result):
+        print(result)
+        print(gl_variable)
 
 
-class FrontEnd():
-
-    def display_input(self):
-        print("display_input {}".format(gl_string))
-
-    def display_output(self):
-        print("display_output {}".format(gl_string))
-
-class TcsInstru(FrontEnd):
-
-    @log_args
-    def test_add(self, a, b):
+class TcsInstru(object):
+    @Presenter("#param")
+    def init(self, a, b):
         return a + b
 
-    def hello(self):
-        print("hello")
+    @Presenter("#param")
+    def open(self):
+        return "open"
+    
+    @Presenter("#result")
+    def read(self):
+        return[1,2, "one", "two"]
 
+    def write(self, data):
+        return "write"
 
-class TestTask():
-    def testcase_01(self):
-        print("testcase_01")
+    def close(self):
+        return "close"
 
+    def deinit(self):
+        return "deinit"
 
+class TestTask:
+    def testcase01(self):
+        device = TcsInstru()
+        device.init(1, 2)
+        device.open()
+        device.read()
+
+    def testcase0(self):
+        device = TcsInstru()
+        device.init(1, 2)
+        device.open()
+        device.read()
 
 if __name__ == '__main__':
     test_class = TcsInstru()
-    foo = test_class.test_add
+    foo = test_class.init
     foo(1, 2)
-    print("#"*80)
-    gl_string = "today is nice day"
-    foo(1, 2)
+    print("*" * 10)
+    gl_variable = "Hello, World!"
+    foo(3, 4)
