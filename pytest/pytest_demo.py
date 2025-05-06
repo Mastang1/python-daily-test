@@ -1,60 +1,42 @@
 import pytest
-from datetime import datetime
 
-# 模块级fixture
-def setup_module(module):
-    print("\n=== Module setup ===")
+def test_addition():
+    """测试加法"""
+    print("运行加法测试")
+    assert 1 + 1 == 2
 
-def teardown_module(module):
-    print("\n=== Module teardown ===")
+def test_subtraction():
+    """测试减法"""
+    print("运行减法测试")
+    assert 5 - 3 == 2
 
-# 会话级fixture
-@pytest.fixture(scope="session", autouse=True)
-def session_fixture():
-    print("\n*** Session fixture setup ***")
-    yield
-    print("\n*** Session fixture teardown ***")
+def test_multiplication():
+    """测试乘法"""
+    print("运行乘法测试")
+    assert 2 * 3 == 6
 
-# 类级别fixture
-@pytest.fixture(scope="class")
-def class_fixture():
-    print("\n--- Class fixture setup ---")
-    yield
-    print("\n--- Class fixture teardown ---")
+def test_division():
+    """测试除法"""
+    print("运行除法测试")
+    assert 8 / 2 == 4
 
-# 函数级fixture带参数
-@pytest.fixture
-def data_fixture(request):
-    print(f"\nFixture setup with param: {request.param}")
-    yield request.param * 2
-    print("\nFixture teardown")
+def test_string_concat():
+    """测试字符串拼接"""
+    print("运行字符串拼接测试")
+    assert "Hello" + " " + "World" == "Hello World"
 
-# 自动使用的fixture
-@pytest.fixture(autouse=True)
-def auto_fixture():
-    print("\nAuto-used fixture setup")
-    yield
-    print("\nAuto-used fixture teardown")
+def test_list_length():
+    """测试列表长度"""
+    print("运行列表长度测试")
+    assert len([1, 2, 3]) == 3
 
-# 参数化测试
-@pytest.mark.parametrize("data_fixture", [1, 2], indirect=True)
-def test_parametrized(data_fixture):
-    assert data_fixture in [2, 4]
+def test_dict_keys():
+    """测试字典键"""
+    print("运行字典键测试")
+    d = {"a": 1, "b": 2}
+    assert "a" in d.keys()
 
-# 测试类使用类级别fixture
-@pytest.mark.usefixtures("class_fixture")
-class TestDemo:
-    # 方法级fixture
-    @pytest.fixture
-    def method_fixture(self):
-        print("\nMethod fixture setup")
-        yield datetime.now()
-        print("\nMethod fixture teardown")
-
-    def test_method1(self, method_fixture):
-        assert isinstance(method_fixture, datetime)
-
-    def test_method2(self, tmp_path):
-        temp_file = tmp_path / "test.txt"
-        temp_file.write_text("pytest")
-        assert temp_file.read_text() == "pytest"
+def test_boolean():
+    """测试布尔值"""
+    print("运行布尔值测试")
+    assert True is True

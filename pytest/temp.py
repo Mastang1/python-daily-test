@@ -3,12 +3,12 @@ from _pytest.config import Config
 from _pytest.main import Session
 from _pytest.nodes import Item
 from typing import List
+from pytest import Session
 
 def discover_tests(path: str = ".") -> List[str]:
     """发现指定路径下的所有测试用例"""
-    # 创建配置对象
-    config = Config()
-    config.args = [path]
+    # 创建配置对象（使用pytest的hook机制正确初始化）
+    config = pytest.Config.fromdictargs({}, [path])
     
     # 创建测试会话
     session = Session.from_config(config)
