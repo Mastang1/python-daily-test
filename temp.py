@@ -1,30 +1,19 @@
-from PyQt5.QtCore import QObject, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QLabel
+import os, sys, time
+import stub_subclass
 
-class FunctionMonitor(QObject):
-    log_signal = pyqtSignal(str)
-    
-    def monitor(self, func):
-        def wrapped(*args, **kwargs):
-            result = func(*args, **kwargs)
-            info = f"{func.__name__}({', '.join(map(repr, args))}) -> {result!r}"
-            self.log_signal.emit(info)
-            return result
-        return wrapped
+def test(arg1: int, arg2: str = "default", arg3: float = 3.14) -> bool:
+    """
+    This is a test function.
+    """
+    return True
 
-if __name__ == '__main__':
-    app = QApplication([])
-    debug_label = QLabel()
-    debug_label.show()
-    
-    monitor = FunctionMonitor()
-    monitor.log_signal.connect(debug_label.setText)
-    
-    @monitor.monitor
-    def sub_function(x, y):
-        return x * y
-    
-    result = sub_function(2, 3)
-    print(f"Result: {result}")
-    
-    app.exec_()
+
+
+# 输出: [<class '__main__.ChildClass1'>, <class '__main__.ChildClass2'>]
+def test_find_subclass():
+    print(stub_subclass.BaseClass.__subclasses__()) 
+
+if __name__ == "__main__":
+    # print(test.__doc__)
+    # print(test.__name__, test.__annotations__)
+    test_find_subclass()
