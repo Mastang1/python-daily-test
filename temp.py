@@ -1,5 +1,9 @@
+import os, sys, time
 from functools import wraps
-
+"""
+This function is as the part of the test runner, it will be used to log the test case.
+And, the can design different runner to run the test case.
+"""
 
 def log_io(func):
     @wraps(func)
@@ -17,30 +21,18 @@ def log_io(func):
     return wrapper
 
 
+def foo():
+    print("foo")
 
-class TestSuite:
-    @log_io
-    def testcase01(self):
-        """
-        doc:testcase01
-        """
-        print("testcase01")
-    @log_io
-    def testcase02(self):
-        """
-        doc:testcase02
-        """
-        print("testcase02")
-    @log_io
-    def testcase03(self):
-        """
-        doc:testcase03
-        """
-        print("testcase03")
+listFuncs = []
+listVariantFuncs = []
+listFuncs.append(foo)
 
-if __name__ == "__main__":
-    suite = TestSuite()
-    for name in suite.__class__.__dict__:
-        if name.startswith("testcase"):
-            testcase = getattr(suite, name)
-            print(testcase.__doc__)
+for func in listFuncs:
+    @log_io
+    def variant_foo():
+        func()
+    listVariantFuncs.append(variant_foo)
+
+for variant_foo in listVariantFuncs:
+    variant_foo()
