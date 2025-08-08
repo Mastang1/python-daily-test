@@ -3,13 +3,13 @@ import inspect
 
 # 原始类定义（方法按 method1 -> method2 -> method3 顺序）
 class ClassA:
-    def method1(self):
+    def amethod1(self):
         return "method1"
     
-    def method2(self):
+    def zmethod2(self):
         return "method2"
     
-    def method3(self):
+    def cmethod3(self):
         return "method3"
 
 # 派生 BaseManager 的子类（推荐做法）
@@ -33,17 +33,28 @@ def test_proxy_class_sort():
     original_class = ClassA  # 直接引用原始类
     # 步骤2：提取原始类的方法名，按定义顺序排列（Python 3.7+ 保留顺序）
     # 过滤条件：仅保留用户定义的方法（排除特殊方法如 __init__、__class__ 等）
+
+
+    # method_names = [
+    #     name for name, func in inspect.getmembers(original_class, inspect.isfunction)
+    #     if not name.startswith("__")  # 排除特殊方法（可选）
+    # ]
+
+    #fixed
     method_names = [
-        name for name, func in inspect.getmembers(original_class, inspect.isfunction)
+        name for name in original_class.__dict__
         if not name.startswith("__")  # 排除特殊方法（可选）
     ]
+    for name in method_names:
+        print("name:", name) 
 
     # 步骤3：从代理对象中获取方法，按原始顺序存储
     ordered_methods = [getattr(proxy_instance, name) for name in method_names]
 
     # 验证结果（打印方法名和调用结果）
     print("方法名（按定义顺序）:", method_names)  # 输出: ['method1', 'method2', 'method3']
-    print("调用 method1:", ordered_methods[0]())  # 输出: method1（通过代理调用真实实例方法）
+    for method in ordered_methods:
+        print("调用:", method()) 
 
     # 关闭管理器
     manager.shutdown()
