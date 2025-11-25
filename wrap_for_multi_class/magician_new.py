@@ -45,13 +45,17 @@ class DualStderr:
     def getvalue(self):
         return self.stream.getvalue()
 
+# 在模块级别定义包装类，避免序列化问题
+class WrappedTestClass(TestClass):
+    pass
+
 class Magician:
     @staticmethod
-    def wrap_methods_with_hooks(paramClass, method_prefix='tcf', pre_hook=None, post_hook=None):
-
+    def wrap_methods_with_hooks(paramClass, wrapped_class, method_prefix='tcf', pre_hook=None, post_hook=None):
         if pre_hook is None or post_hook is None:
             raise ValueError("pre_hook and post_hook must be provided")
-            
+        
+        # 遍历原始类的所有方法
         for name, method in vars(paramClass).items():
             if callable(method) and name.startswith(method_prefix):
                 original_method = method
@@ -59,11 +63,11 @@ class Magician:
                 # 使用闭包捕获当前方法
                 def create_wrapper(original):
                     @wraps(original)
-                    def wrapper(*args, **kwargs):
+                    def wrapper(self, *args, **kwargs):
                         # 执行前置钩子
                         pre_hook_result = pre_hook()
                         # 执行原始方法
-                        method_result = original(*args, **kwargs)
+                        method_result = original(self, *args, **kwargs)
                         # 执行后置钩子
                         post_hook_result = post_hook()
                         # 返回结构化结果
@@ -74,9 +78,10 @@ class Magician:
                         }
                     return wrapper
                 
-                setattr(paramClass, name, create_wrapper(original_method))
+                # 将包装后的方法设置到新类上
+                setattr(wrapped_class, name, create_wrapper(original_method))
         
-        return paramClass
+        return wrapped_class
     
     @staticmethod
     def pre_hook():
@@ -101,11 +106,16 @@ class Magician:
 class TestClassManager(BaseManager):
     pass
 
-if __name__ == "__main__":
+def get_wrapped_class():
+    """返回包装后的类，确保在子进程中也能使用"""
+    return Magician.wrap_methods_with_hooks(TestClass, WrappedTestClass, pre_hook=Magician.pre_redirect_std, post_hook=Magician.post_redirect_std)
 
-    Magician.wrap_methods_with_hooks(TestClass, pre_hook=Magician.pre_redirect_std, post_hook=Magician.post_redirect_std)
+if __name__ == "__main__":
+    # 获取包装后的类
+    WrappedTestClass = get_wrapped_class()
     
-    TestClassManager.register('TestClass', TestClass)
+    # 注册包装后的类而不是原始类
+    TestClassManager.register('TestClass', WrappedTestClass)
     test_class_manager = TestClassManager()
     test_class_manager.start()
     
