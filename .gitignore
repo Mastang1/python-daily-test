@@ -27,3 +27,5 @@ build/
 
 # Others
 .DS_Store
+*.out
+*.exe

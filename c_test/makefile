@@ -12,7 +12,8 @@ SOURCES := $(wildcard *.c)
 
 # Generate target executable names from source files (remove .c extension)
 TARGETS := $(SOURCES:.c=)
-
+$(info SOURCES = $(SOURCES) )
+$(info TARGETS = $(TARGETS) )
 # Default target: compile all executables
 all: $(TARGETS)
 
