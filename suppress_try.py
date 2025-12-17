@@ -15,9 +15,6 @@ with suppress():                     # 等价于 suppress(Exception)
 with suppress(FileNotFoundError), suppress(PermissionError):
     os.remove("important.txt")
 
-# 4. 经典实战场景（你会天天用）
-with suppress）
-
 # 删除文件时不在乎是否存在
 with suppress(FileNotFoundError):
     os.remove("cache.db")
