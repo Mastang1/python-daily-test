@@ -26,4 +26,4 @@ def simple_search_tcf_ldh(file_path):
 
 # 使用示例
 if __name__ == "__main__":
-    simple_search_tcf_ldh("C:\\tangyapeng\\docs\\StarGather\\report_gen_proj\\ldh_report.txt")
+    simple_search_tcf_ldh("test_tasks\\tts_test_suite_ana_fault.py")
